@@ -8,8 +8,7 @@ module Commitchamp
   class App
     def initialize
     	@auth = nil
-    	@org = nil
-    	@repo = nil
+    	@data = {}
     end
 
     
@@ -24,15 +23,28 @@ module Commitchamp
 	  response
 	end
 
+def sort
+	selection = prompt("How would you like to sort the data?", /^(D|C|A)$/)
+	if selection == D
+
+	elsif selection == C
+
+	else
+
+	end
+end
 
 	def run
     	@auth = prompt("Please enter your Github token.  It will not be visible in the code, so rest easy.", /^.{40}$/)
-    	@org = prompt("What Organization would you like to see?", //)
-    	@repo = prompt("Which repo in this Organization?", //)
     	search = Github.new(@auth)
     	data = search.fetch_bulk
     	binding.pry
-    	print data
+  		@data = data.each do |hash|
+    		hash[:weeks]
+    	end
+       	binding.pry
+#    	@data.push x[:w], x[:d], x[:c], x[:a] 
+		  
    	end
 
   end
@@ -44,7 +56,7 @@ app.run
 
 
 
-	# def redo
+	# def redo_advanced
 	# 	answer = prompt("Would you like to view another 'REPO', a different 'ORG', or 'EXIT'?", /^(ORG|EXIT|REPO)$/)
 	# 	if answer == "ORG"
 	# 		return the user to change @org specifically
@@ -62,10 +74,10 @@ app.run
 
 # Running bundle exec ruby lib/commit_champ.rb should:
 
-# Prompt the user for an auth token
-# Ask the user what org/repo to get data about from github
-# Print a table of contributions ranked in various ways
-# Ask the user if they'd like to fetch another or quit.
+# Prompt the user for an auth token  - done
+# Ask the user what org/repo to get data about from github  -  done
+# Print a table of contributions ranked in various ways  -  in progress
+# Ask the user if they'd like to fetch another or quit.  -  done-I-think
 # Start by testing with a small repo like:
 
 # kingcons/coleslaw sinatra/sinatra
