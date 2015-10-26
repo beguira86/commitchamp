@@ -29,7 +29,16 @@ module Commitchamp
 	end
 
 
-
+# def get_author(contribution)  this should match the layout of response.first
+#    .first to help reduce amount of data
+# 	 ["author"]["login"]
+#
+# def get_stats(contribution, stat)
+# weeks = contribution["weeks"] 
+# counts = weeks.map { |hash| hash[#stat]}
+# .reduce look up on the enumerable docs
 
 	end
 end
+
+

@@ -24,7 +24,7 @@ module Commitchamp
 	end
 
 def sort
-	selection = prompt("How would you like to sort the data?", /^(D|C|A)$/)
+	selection = prompt("How would you like to sort the data?  By (D)eletions, (C)ommits, or (A)dditions?", /^(D|C|A)$/)
 	if selection == D
 
 	elsif selection == C
@@ -38,13 +38,50 @@ end
     	@auth = prompt("Please enter your Github token.  It will not be visible in the code, so rest easy.", /^.{40}$/)
     	search = Github.new(@auth)
     	data = search.fetch_bulk
-    	binding.pry
-  		@data = data.each do |hash|
-    		hash[:weeks]
-    	end
-       	binding.pry
-#    	@data.push x[:w], x[:d], x[:c], x[:a] 
-		  
+    	table=[]
+    	data.each do |data|
+    		additions = 0
+    		deletions = 0
+    		commits = 0
+    		stats = data["weeks"]
+    		stats.map do |week|
+    			additions += week["a"]
+    			deletions += week["d"]
+      			commits += week["c"]
+  			end
+  			table.push ({author: data["author"]["login"], additions: additions, deletions: deletions, commits: commits})
+		end  			
+# RICKARDS HELP IN CLASS
+
+#   items = [
+#   { :login=>"cramer", 
+#     :weeks=>[
+#               {:a=>1}, 
+#               {:a=>2}
+#             ]
+#   }, 
+#   { :login=>"rickard", 
+#     :weeks=>[
+#               {:a=>4}, 
+#               {:a=>2}
+#             ]
+#   }
+# ]
+
+# result=[]
+# items.each do |item|
+#    additions = 0
+#    deltions = 0
+#    commits = 0
+#    weeks = item[:weeks]
+#    weeks.each do |week|
+#      additions += week[:a]
+#      deltions += week[:d]
+#      commits += week[:c]
+#    end  
+#    result.push({login: item[:login], additions: additions, deletions: deltions, commits: commits})
+# end  
+
    	end
 
   end
@@ -53,6 +90,9 @@ end
 app = Commitchamp::App.new
 app.run
 
+
+BRIT CLASS REVIEW
+use author login key
 
 
 
