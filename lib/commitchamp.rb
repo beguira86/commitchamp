@@ -30,6 +30,7 @@ module Commitchamp
     	until quits == "EXIT"
 	    	data = search.fetch_bulk
 	    	table=[]
+
 	    	data.each do |data|
 	    		additions = 0
 	    		deletions = 0
@@ -54,9 +55,9 @@ module Commitchamp
 					table.sort_by! { |x| x[:deletions]}
 				end
 					puts table
-						
+
 	   	
-		quits = prompt("If you are finished looking at repos, please type EXIT.", /^(.*)/)
+		quits = prompt("If you are finished looking at repos, please type EXIT.  Otherwise type in whatever you want!", /^(.*)/)
 		end
 	end
 
