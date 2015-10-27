@@ -23,76 +23,48 @@ module Commitchamp
 	  response
 	end
 
-def sort
-	selection = prompt("How would you like to sort the data?  By (D)eletions, (C)ommits, or (A)dditions?", /^(D|C|A)$/)
-	if selection == D
-
-	elsif selection == C
-
-	else
-
-	end
-end
-
 	def run
     	@auth = prompt("Please enter your Github token.  It will not be visible in the code, so rest easy.", /^.{40}$/)
     	search = Github.new(@auth)
-    	data = search.fetch_bulk
-    	table=[]
-    	data.each do |data|
-    		additions = 0
-    		deletions = 0
-    		commits = 0
-    		stats = data["weeks"]
-    		stats.map do |week|
-    			additions += week["a"]
-    			deletions += week["d"]
-      			commits += week["c"]
-  			end
-  			table.push ({author: data["author"]["login"], additions: additions, deletions: deletions, commits: commits})
-		end  			
-# RICKARDS HELP IN CLASS
+    	quits = "nope"
+    	until quits == "EXIT"
+	    	data = search.fetch_bulk
+	    	table=[]
+	    	data.each do |data|
+	    		additions = 0
+	    		deletions = 0
+	    		commits = 0
+	    		stats = data["weeks"]
+	    		stats.map do |week|
+	    			additions += week["a"]
+	    			deletions += week["d"]
+	      			commits += week["c"]
+	  			end
+	  			table.push ({author: data["author"]["login"], additions: additions, deletions: deletions, commits: commits})
+			end 
 
-#   items = [
-#   { :login=>"cramer", 
-#     :weeks=>[
-#               {:a=>1}, 
-#               {:a=>2}
-#             ]
-#   }, 
-#   { :login=>"rickard", 
-#     :weeks=>[
-#               {:a=>4}, 
-#               {:a=>2}
-#             ]
-#   }
-# ]
-
-# result=[]
-# items.each do |item|
-#    additions = 0
-#    deltions = 0
-#    commits = 0
-#    weeks = item[:weeks]
-#    weeks.each do |week|
-#      additions += week[:a]
-#      deltions += week[:d]
-#      commits += week[:c]
-#    end  
-#    result.push({login: item[:login], additions: additions, deletions: deltions, commits: commits})
-# end  
-
-   	end
+				selection = prompt("How would you like to sort the data?  By (D)eletions, (C)ommits, (T)otal changes or (A)dditions?", /^(d|c|a|t)$/i)
+				if selection.downcase == "d"
+					table.sort_by! { |x| x[:deletions]}			
+				elsif selection.downcase == "c"
+					table.sort_by! { |x| x[:commits]}
+				elsif selection.downcase == "a"
+					table.sort_by! { |x| x[:additions]}
+				else
+					table.sort_by! { |x| x[:deletions]}
+				end
+					puts table
+						
+	   	
+		quits = prompt("If you are finished looking at repos, please type EXIT.", /^(.*)/)
+		end
+	end
 
   end
 end
 
 app = Commitchamp::App.new
 app.run
-
-
-BRIT CLASS REVIEW
-use author login key
 
 
 
@@ -107,9 +79,9 @@ use author login key
 	# 	end
 	# end
 
-	### def redo    ****  Move this to github?  If the requirements are to sort differently OR fetch/quit, put there?
-	### 	prompt("Would you like to view another list?", /^(yes|y|ye|yea)$/i)
-	### end
+	# ## def redo    ****  Move this to github?  If the requirements are to sort differently OR fetch/quit, put there?
+	# ## 	prompt("Would you like to view another list?", /^(yes|y|ye|yea)$/i)
+	# ## end
 
 
 # Running bundle exec ruby lib/commit_champ.rb should:
@@ -138,4 +110,3 @@ use author login key
 # User 2             6940           913        1603
 # ...
 # Finally, ask the user if they'd like to sort the data differently, fetch another repo, or quit.
-
